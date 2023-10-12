@@ -1,40 +1,40 @@
 <?php
+$books = [
+    [
+        'name' => 'Do Androids of Electric Sheep',
+        'author' => 'Pholip K. Dick',
+        'releaseYear' => 1968,
+        'purchaseUrl' => 'http://example.com'
+    ],
+    [
+        'name' => 'Project Hail Mary',
+        'author' => 'Andy Weir',
+        'releaseYear' => 2021,
+        'purchaseUrl' => 'http://example.com'
+    ],
+    [
+        'name' => 'The Martian',
+        'author' => 'Andy Weir',
+        'releaseYear' => 2011,
+        'purchaseUrl' => 'http://example.com'
+    ]
+];
 
-class Cart
+function filter($items, $fn)
 {
-    const PRICE_BUTTER  = 1.00;
-    const PRICE_MILK    = 3.00;
-    const PRICE_EGGS    = 6.95;
+    $fillterdItems = [];
 
-    protected $products = array();
-
-    public function add($product, $quantity)
-    {
-        $this->products[$product] = $quantity;
+    foreach ($items as $item) {
+        if ($fn($item)) {
+            $fillterdItems[] = $item;
+        }
     }
 
-    public function getQuantity($product)
-    {
-        return isset($this->products[$product]) ? $this->products[$product] : FALSE;
-    }
+    return $fillterdItems;
+};
 
-    public function getTotal($tax)
-    {
-        $total = 0.00;
+$filteredBooks = array_filter($books, function ($book) {
+    return $book['author'] === 'Andy Weir';
+});
 
-        $callback =
-            function ($quantity, $product) use ($tax, &$total) {
-                $pricePerItem = constant(__CLASS__ . "::PRICE_" .
-                    strtoupper($product));
-                $total += ($pricePerItem * $quantity) * ($tax + 1.0);
-            };
-
-        array_walk($this->products, $callback);
-        return round($total, 2);
-    }
-}
-
-$cart = new Cart();
-
-$cart->add('butter', 1);
-print $cart->getTotal(0.15);
+require "index.view.php";
