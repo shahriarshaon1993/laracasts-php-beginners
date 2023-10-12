@@ -1,62 +1,40 @@
 <?php
-$books = [
-    [
-        'name' => 'Do Androids of Electric Sheep',
-        'author' => 'Pholip K. Dick',
-        'releaseYear' => 1968,
-        'purchaseUrl' => 'http://example.com'
-    ],
-    [
-        'name' => 'Project Hail Mary',
-        'author' => 'Andy Weir',
-        'releaseYear' => 2021,
-        'purchaseUrl' => 'http://example.com'
-    ],
-    [
-        'name' => 'The Martian',
-        'author' => 'Andy Weir',
-        'releaseYear' => 2011,
-        'purchaseUrl' => 'http://example.com'
-    ]
-];
 
-function filter($items, $fn)
+class Cart
 {
-    $fillterdItems = [];
+    const PRICE_BUTTER  = 1.00;
+    const PRICE_MILK    = 3.00;
+    const PRICE_EGGS    = 6.95;
 
-    foreach ($items as $item) {
-        if ($fn($item)) {
-            $fillterdItems[] = $item;
-        }
+    protected $products = array();
+
+    public function add($product, $quantity)
+    {
+        $this->products[$product] = $quantity;
     }
 
-    return $fillterdItems;
-};
+    public function getQuantity($product)
+    {
+        return isset($this->products[$product]) ? $this->products[$product] : FALSE;
+    }
 
-$filteredBooks = array_filter($books, function ($book) {
-    return $book['author'] === 'Andy Weir';
-});
-?>
+    public function getTotal($tax)
+    {
+        $total = 0.00;
 
-<!DOCTYPE html>
-<html lang="en">
+        $callback =
+            function ($quantity, $product) use ($tax, &$total) {
+                $pricePerItem = constant(__CLASS__ . "::PRICE_" .
+                    strtoupper($product));
+                $total += ($pricePerItem * $quantity) * ($tax + 1.0);
+            };
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo</title>
-</head>
+        array_walk($this->products, $callback);
+        return round($total, 2);
+    }
+}
 
-<body>
-    <ul>
-        <?php foreach ($filteredBooks as $book) : ?>
-        <li>
-            <a href="<?= $book['purchaseUrl'] ?>">
-                <?= $book['name'] ?> (<?= $book['releaseYear'] ?>) - By <?= $book['author']; ?>
-            </a>
-        </li>
-        <?php endforeach; ?>
-    </ul>
-</body>
+$cart = new Cart();
 
-</html>
+$cart->add('butter', 1);
+print $cart->getTotal(0.15);
