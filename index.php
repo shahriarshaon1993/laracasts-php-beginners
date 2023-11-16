@@ -33,8 +33,12 @@ function filter($items, $fn)
     return $fillterdItems;
 };
 
-$filteredBooks = array_filter($books, function ($book) {
+$filteredBooks = filter($books, function ($book) {
     return $book['author'] === 'Andy Weir';
 });
+
+// $filteredBooks = array_filter($books, function ($book) {
+//     return $book['author'] === 'Andy Weir';
+// });
 
 require "index.view.php";
