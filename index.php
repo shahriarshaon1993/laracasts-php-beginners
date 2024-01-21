@@ -6,7 +6,7 @@ require 'Database.php';
 
 $config = require('config.php');
 
-$db = new Database($config['database']);
+$db = new Database($config['database'], $config['username'], $config['password']);
 
 $id = $_GET['id'];
 

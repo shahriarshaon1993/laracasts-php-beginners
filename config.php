@@ -6,5 +6,7 @@ return [
         'port' => '3307',
         'dbname' => 'myapp',
         'charset' => 'utf8mb4'
-    ]
+    ],
+    'username' => 'root',
+    'password' => ''
 ];
