@@ -12,7 +12,7 @@ if (!Validator::string($_POST['body'], 1, 100)) {
     $errors['body'] = 'A body of no more than 100 characters is required.';
 }
 
-if (! empty($errors)) {
+if (!empty($errors)) {
     return view("notes/create.view.php", [
         'heading' => 'Create Note',
         'errors' => $errors
@@ -24,5 +24,4 @@ $db->query('INSERT INTO notes (body, user_id) VALUES (:body, :user_id)', [
     'user_id' => 3,
 ]);
 
-header('location: /notes');
-die();
+return redirect('/notes');
