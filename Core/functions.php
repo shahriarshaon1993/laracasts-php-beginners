@@ -1,6 +1,7 @@
 <?php
 
 use Core\Response;
+use Core\Session;
 
 function dd($value)
 {
@@ -11,7 +12,7 @@ function dd($value)
     die();
 }
 
-function urlIs($url)
+function urlIs($url): bool
 {
     return $_SERVER['REQUEST_URI'] === $url;
 }
@@ -25,19 +26,19 @@ function abort($code = 404)
     die();
 }
 
-function authorize($condition, $status = Response::FORBIDDEN)
+function authorize($condition, $status = Response::FORBIDDEN): void
 {
     if (!$condition) {
         abort($status);
     }
 }
 
-function base_path($path)
+function base_path($path): string
 {
     return BASE_PATH . $path;
 }
 
-function view($path, $attributes = [])
+function view($path, $attributes = []): void
 {
     extract($attributes);
 
@@ -48,4 +49,9 @@ function redirect($path)
 {
     header("location: {$path}");
     exit();
+}
+
+function old($key, $default = '')
+{
+    return Session::get('old')[$key] ?? $default;
 }
