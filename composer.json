@@ -1,0 +1,16 @@
+{
+    "name": "shaon/laracasts-php-beginners",
+    "authors": [
+        {
+            "name": "shahriarshaon1993",
+            "email": "shahriarshaon1993@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Core\\": "Core/",
+            "Http\\": "Http/"
+        }
+    }
+}
